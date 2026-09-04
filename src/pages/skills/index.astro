@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/ui/Icon.astro";
+import { PAGES, SKILL_CATEGORIES } from "../../config";
+
+if (PAGES.skills?.isActive === false) {
+    return Astro.redirect("/404");
+}
+---
+
+<BaseLayout title={PAGES.skills.title}>
+    <header class="page-header mb-8">
+        <h1 class="page-title mb-2">{PAGES.skills.title}</h1>
+        <p class="page-subtitle text-sm md:text-base opacity-75">
+            Core computational frameworks, statistical methodologies, and technical stack applied across research and software development.
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+        {
+            SKILL_CATEGORIES.map((category) => (
+                <div class="p-5 md:p-6 rounded-xl border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--accent)] transition-all duration-200 flex flex-col justify-between group shadow-xs">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2.5">
+                            <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 text-[var(--accent)] flex items-center justify-center shrink-0 group-hover:bg-[var(--accent)] group-hover:text-white transition-colors duration-200">
+                                <Icon name={category.icon as any} size={20} />
+                            </div>
+                            <h2 class="text-base md:text-lg font-bold text-[var(--foreground)] font-heading leading-tight m-0">
+                                {category.name}
+                            </h2>
+                        </div>
+                        <p class="text-xs md:text-sm text-[var(--foreground)] opacity-70 leading-relaxed mb-4">
+                            {category.description}
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5 md:gap-2 pt-3 border-t border-[var(--border)]/50">
+                        {category.skills.map((skill) => (
+                            <span class="px-2.5 py-1 rounded-md bg-[var(--foreground)]/[0.05] dark:bg-[var(--foreground)]/[0.08] text-xs md:text-[13px] font-medium text-[var(--foreground)] opacity-90 border border-[var(--border)]/40 hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors">
+                                {skill}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</BaseLayout>

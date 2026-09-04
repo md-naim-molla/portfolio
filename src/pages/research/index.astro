@@ -1,0 +1,240 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Tag from "../../components/ui/Tag.astro";
+import Icon from "../../components/ui/Icon.astro";
+import { PAGES, SOCIALS } from "../../config";
+
+if (PAGES.research?.isActive === false) {
+    return Astro.redirect("/404");
+}
+
+const publications = await getCollection("publications");
+const projects = await getCollection("projects");
+
+const mailSocial = SOCIALS.find((s) => s.name === "Mail");
+const scholarSocial = SOCIALS.find((s) => s.name === "Google Scholar");
+
+// Themes matching fahim.bd/research structure
+const researchThemes = [
+    {
+        title: "NLP & Multilingual Language Understanding",
+        summary: "Developing robust, multi-model architectures and representation learning frameworks for low-resource, code-mixed, and real-world linguistic datasets.",
+        tags: ["NLP & LLMs", "Transformers", "Low-Resource AI", "Sentiment Analysis", "Ensemble Learning"],
+        publications: [
+            {
+                title: "A Multi-Model Approach to English-Bangla Sentiment Classification of Government Mobile Banking App Reviews",
+                href: "/publications/noise",
+                year: "2024",
+            }
+        ],
+        projects: [
+            {
+                title: "English-Bangla Sentiment Classification Engine",
+                href: "/projects",
+            }
+        ]
+    },
+    {
+        title: "AI in Public Health & Epidemiological Modeling",
+        summary: "Applying rigorous statistical modeling, disease surveillance frameworks, and machine learning to analyze epidemiological data and healthcare outcomes.",
+        tags: ["Public Health", "Epidemiology", "Biostatistics", "Predictive Analytics", "Health Surveillance"],
+        publications: [
+            {
+                title: "Statistical & ML Frameworks for Healthcare Pattern Recognition",
+                href: "/publications",
+                year: "2024",
+            }
+        ],
+        projects: [
+            {
+                title: "Epidemiological Data Analytics & Health Surveillance",
+                href: "/projects",
+            }
+        ]
+    },
+    {
+        title: "Statistical Machine Learning & Uncertainty Quantification",
+        summary: "Bridging mathematical probability theory and deep learning to ensure reliable uncertainty estimation, model interpretability, and robust empirical validation.",
+        tags: ["Statistical Learning", "Bayesian Inference", "Uncertainty Quantification", "Model Interpretability"],
+        publications: [
+            {
+                title: "Robust Statistical Inference in High-Dimensional Empirical Data",
+                href: "/publications",
+                year: "2024",
+            }
+        ],
+        projects: [
+            {
+                title: "Statistical Modeling & Uncertainty Estimation Frameworks",
+                href: "/projects",
+            }
+        ]
+    }
+];
+---
+
+<BaseLayout title="AI/ML & Statistical Research | Md. Naim Molla" description="Research statement, core themes, and collaborative directions by Md. Naim Molla.">
+    <div class="container-narrow flex flex-col gap-8">
+        <!-- Page Header -->
+        <header class="page-header mb-0">
+            <h1 class="page-title">AI/ML & Statistical Research</h1>
+            <p class="page-subtitle">
+                A quick map of what I work on, representative papers/projects, and what I’m looking for in a PhD lab.
+            </p>
+        </header>
+
+        <!-- In Short Block -->
+        <section class="p-6 rounded-xl border border-[var(--border)] bg-[var(--surface)]">
+            <h2 class="title-md font-bold mb-2">In short</h2>
+            <p class="body mt-2">
+                I study <strong>trustworthy machine learning and applied statistical modeling</strong>, with current research spanning <strong>Natural Language Processing (multilingual & code-mixed NLP)</strong>, <strong>epidemiological public-health modeling</strong>, and <strong>predictive data science</strong>.
+            </p>
+        </section>
+
+        <!-- Research Statement -->
+        <section class="section">
+            <h2 class="section-title">Research statement</h2>
+            <div class="prose space-y-4">
+                <p>
+                    My research starts from a foundational principle: <em>how do we combine rigorous mathematical statistics with modern deep learning to build models that are reliable, robust, and empirically sound?</em> In high-stakes fields like public health and low-resource multilingual communication, a model cannot merely optimize for benchmark accuracy—it must generalize under distribution shifts and provide transparent inference.
+                </p>
+                <p>
+                    This perspective guides my work across three interconnected areas. In <strong>Natural Language Processing</strong>, I design multi-model and ensemble frameworks to classify complex sentiment in low-resource and code-mixed settings (such as English-Bangla app reviews), addressing noisy informal text where single models often fail. In <strong>Public Health & Epidemiology</strong>, I apply biostatistical modeling and machine learning to analyze health indicators, disease trajectories, and demographic health surveys. In <strong>Statistical Machine Learning</strong>, I focus on uncertainty estimation, robust inference, and principled evaluation protocols to ensure models do not rely on spurious correlations.
+                </p>
+                <p>
+                    Across all projects, my priority is <strong>empirical rigor and thoughtful evaluation</strong>. A model that achieves high cross-validation metrics but breaks down in real-world deployment is not practically useful. My goal is to build methods whose assumptions, limits, and predictive uncertainties are transparent and dependable.
+                </p>
+                <p>
+                    Looking ahead, I am actively seeking <strong>Ph.D. positions in Machine Learning, AI, and Applied Statistics</strong>, particularly in research groups where rigorous methodology, open artifacts, and meaningful applications to healthcare and NLP are taken seriously.
+                </p>
+            </div>
+        </section>
+
+        <hr class="border-t border-[var(--border)] my-2" />
+
+        <!-- Research Themes -->
+        <section class="section">
+            <h2 class="section-title mb-6">Research themes</h2>
+            <div class="flex flex-col gap-6">
+                {
+                    researchThemes.map((theme) => (
+                        <article class="p-6 rounded-xl border border-[var(--border)] bg-[var(--surface)] transition-all duration-200 hover:border-[var(--accent)]">
+                            <h3 class="title-md font-bold text-[var(--foreground)]">
+                                {theme.title}
+                            </h3>
+                            <p class="body-sm mt-2 opacity-85">
+                                {theme.summary}
+                            </p>
+
+                            <!-- Tags -->
+                            <div class="flex flex-wrap gap-1.5 mt-4">
+                                {theme.tags.map((tag) => (
+                                    <Tag name={tag} size="sm" />
+                                ))}
+                            </div>
+
+                            <!-- Sub-grid: Publications & Projects -->
+                            <div class="mt-6 pt-5 border-t border-[var(--border)] grid gap-6 sm:grid-cols-2">
+                                <div>
+                                    <p class="text-xs font-mono font-semibold uppercase tracking-wider opacity-70 mb-3">
+                                        Representative publications
+                                    </p>
+                                    <ul class="flex flex-col gap-2 pl-0 list-none mb-0">
+                                        {theme.publications.map((pub) => (
+                                            <li class="mb-0">
+                                                <a
+                                                    href={pub.href}
+                                                    class="text-sm font-semibold text-[var(--accent)] hover:underline block leading-snug"
+                                                >
+                                                    {pub.title}
+                                                </a>
+                                                <span class="text-xs opacity-60">
+                                                    · {pub.year}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <p class="text-xs font-mono font-semibold uppercase tracking-wider opacity-70 mb-3">
+                                        Related projects
+                                    </p>
+                                    <ul class="flex flex-col gap-2 pl-0 list-none mb-0">
+                                        {theme.projects.map((proj) => (
+                                            <li class="mb-0">
+                                                <a
+                                                    href={proj.href}
+                                                    class="text-sm font-semibold text-[var(--foreground)] hover:text-[var(--accent)] hover:underline block leading-snug"
+                                                >
+                                                    {proj.title}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        </article>
+                    ))
+                }
+            </div>
+        </section>
+
+        <hr class="border-t border-[var(--border)] my-2" />
+
+        <!-- What I'm Looking For -->
+        <section class="section p-6 rounded-xl border border-[var(--border)] bg-[var(--surface)]">
+            <h2 class="title-md font-bold mb-3">What I’m looking for</h2>
+            <ul class="prose space-y-2 mb-6">
+                <li>
+                    <strong>Ph.D. & Graduate Research Labs</strong> working on trustworthy ML, NLP/LLMs, or statistical modeling with real-world applications.
+                </li>
+                <li>
+                    <strong>Strong Mentorship & Culture</strong> of rigorous evaluation, reproducibility, open-source code, and reproducible artifacts.
+                </li>
+                <li>
+                    <strong>Interdisciplinary Collaboration</strong> across computer science, mathematical statistics, and healthcare/epidemiological data.
+                </li>
+            </ul>
+
+            <div class="flex flex-wrap gap-2.5 pt-2 border-t border-[var(--border)]">
+                <a href="/cv" class="btn btn-sm inline-flex items-center gap-1.5">
+                    <Icon name="User" size={16} />
+                    <span>Curriculum Vitae</span>
+                </a>
+                <a href="/publications" class="btn btn-sm">
+                    <span>Publications</span>
+                </a>
+                <a href="/talks" class="btn btn-sm">
+                    <span>Talks</span>
+                </a>
+                <a href="/projects" class="btn btn-sm">
+                    <span>Projects</span>
+                </a>
+                {scholarSocial && (
+                    <a
+                        href={scholarSocial.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-sm inline-flex items-center gap-1.5"
+                    >
+                        <Icon name="GoogleScholar" size={16} />
+                        <span>Google Scholar ↗</span>
+                    </a>
+                )}
+                {mailSocial && (
+                    <a
+                        href={mailSocial.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-sm inline-flex items-center gap-1.5"
+                    >
+                        <Icon name="Mail" size={16} />
+                        <span>Contact & Discuss (Gmail)</span>
+                    </a>
+                )}
+            </div>
+        </section>
+    </div>
+</BaseLayout>

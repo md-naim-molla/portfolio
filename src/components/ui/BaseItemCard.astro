@@ -1,0 +1,205 @@
+---
+import Tag from "./Tag.astro";
+import Icon from "./Icon.astro";
+import { BASE_PATH } from "../../config";
+
+interface Props {
+    title: string;
+    href: string;
+    description?: string;
+    date?: string;
+    authors?: string;
+    extraInput?: string;
+    tags?: string[];
+    externalUrl?: string;
+    image?: string;
+    role?: string;
+    location?: string;
+    paperTitle?: string;
+    event?: string;
+}
+
+const {
+    title,
+    href,
+    description,
+    date,
+    authors,
+    extraInput,
+    tags,
+    externalUrl,
+    image,
+    role,
+    location,
+    paperTitle,
+    event,
+} = Astro.props;
+
+const isTalk = Boolean(role || (event && location) || (href && href.includes('/talks/')));
+
+const resolveHref = (url?: string) => {
+    if (!url) return "#";
+    if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("mailto:") || url.startsWith("#")) {
+        return url;
+    }
+    const cleanPath = url.startsWith("/") ? url.slice(1) : url;
+    return BASE_PATH ? `${BASE_PATH}/${cleanPath}` : `/${cleanPath}`;
+};
+
+const resolveImageUrl = (img?: string) => {
+    if (!img) return undefined;
+    if (img.startsWith("http://") || img.startsWith("https://") || img.startsWith("data:")) {
+        return img;
+    }
+    const cleanPath = img.startsWith("/") ? img.slice(1) : img;
+    return BASE_PATH ? `${BASE_PATH}/${cleanPath}` : `/${cleanPath}`;
+};
+
+const resolvedImage = resolveImageUrl(image);
+const resolvedHref = resolveHref(href);
+
+const externalHostLabel = externalUrl ? (() => {
+    try {
+        const host = new URL(externalUrl).hostname.toLowerCase();
+        if (host.includes("arxiv")) return "arXiv";
+        if (host.includes("researchgate")) return "ResearchGate";
+        if (host.includes("github.com")) return "GitHub";
+        if (host.includes("doi.org")) return "DOI";
+        if (host.includes("ieeexplore")) return "IEEE";
+        if (host.includes("scholar.google")) return "Google Scholar";
+        return "Link";
+    } catch {
+        return "Link";
+    }
+})() : undefined;
+
+// Highlight author name if matches Md. Naim Molla or variants
+const formatAuthors = (authorsStr?: string) => {
+    if (!authorsStr) return "";
+    const targets = ["MN Molla", "M.N. Molla", "Md. Naim Molla", "Naim Molla", "Md Naim Molla", "Claude Shannon"];
+    let formatted = authorsStr;
+    for (const target of targets) {
+        if (formatted.includes(target)) {
+            return formatted.split(target).join(`<strong class="text-[var(--foreground)] font-bold">${target}</strong>`);
+        }
+    }
+    return formatted;
+};
+
+// Format talk date and location
+const talkDateLocation = [date, location].filter(Boolean).join(" - ");
+---
+
+{isTalk ? (
+    <article class="p-5 md:p-6 rounded-xl border border-[var(--border)] bg-[var(--surface)] transition-all duration-200 hover:border-[var(--accent)] hover:shadow-xs group">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 md:w-13 md:h-13 rounded-lg border border-[var(--border)] p-1.5 bg-white shrink-0 flex items-center justify-center overflow-hidden">
+                {resolvedImage ? (
+                    <img src={resolvedImage} alt={title} class="w-full h-full object-contain" loading="lazy" />
+                ) : (
+                    <div class="w-full h-full flex items-center justify-center text-[var(--accent)] bg-[var(--surface)]">
+                        <Icon name="Institution" size={24} />
+                    </div>
+                )}
+            </div>
+
+            <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between gap-3">
+                    <a href={resolvedHref} class="text-base md:text-lg font-bold text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors no-underline">
+                        {title}
+                    </a>
+                    {role && (
+                        <span class="text-xs font-bold tracking-wider uppercase text-[var(--accent)] shrink-0 mt-0.5">
+                            {role}
+                        </span>
+                    )}
+                </div>
+
+                {(event || extraInput) && (
+                    <p class="text-sm opacity-75 font-normal mt-0.5 mb-1 leading-snug">
+                        {event || extraInput}
+                    </p>
+                )}
+
+                {talkDateLocation && (
+                    <p class="text-xs font-mono opacity-60 mb-2">
+                        {talkDateLocation}
+                    </p>
+                )}
+
+                {(paperTitle || description) && (
+                    <p class="text-sm font-medium text-[var(--foreground)] opacity-90 leading-relaxed mb-0">
+                        {paperTitle ? `“${paperTitle.replace(/^["“”]|["“”]$/g, '')}”` : description}
+                    </p>
+                )}
+            </div>
+        </div>
+    </article>
+) : (
+    <article class="card">
+        <div class="flex items-start justify-between gap-4">
+            <div class="flex-1 min-w-0">
+                <a href={resolvedHref} class="card-title block">
+                    {title}
+                </a>
+
+                {authors && (
+                    <p class="card-authors" set:html={formatAuthors(authors)} />
+                )}
+
+                {(extraInput || date) && (
+                    <div class="card-meta">
+                        {extraInput && (
+                            <span class="card-badge">
+                                {extraInput}
+                            </span>
+                        )}
+                        {date && (
+                            <span class="text-xs opacity-75 font-medium flex items-center gap-1">
+                                <Icon name="Calendar" size={14} />
+                                <span>{date}</span>
+                            </span>
+                        )}
+                    </div>
+                )}
+            </div>
+
+            {resolvedImage && (
+                <div class="card-image shrink-0">
+                    <img src={resolvedImage} alt={title} loading="lazy" />
+                </div>
+            )}
+        </div>
+
+        {description && (
+            <p class="card-desc">
+                {description}
+            </p>
+        )}
+
+        {tags && tags.length > 0 && (
+            <div class="card-tags">
+                {tags.map((tag) => (
+                    <Tag name={tag} size="sm" />
+                ))}
+            </div>
+        )}
+
+        <div class="card-footer">
+            {externalUrl && (
+                <a
+                    href={externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="action-pill action-pill-primary"
+                >
+                    <Icon name="ExternalLink" size={14} />
+                    <span>{externalHostLabel} ↗</span>
+                </a>
+            )}
+            <a href={resolvedHref} class="action-pill">
+                <span>Details & Citation →</span>
+            </a>
+        </div>
+    </article>
+)}

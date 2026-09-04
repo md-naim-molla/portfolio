@@ -1,0 +1,81 @@
+---
+import { getEntry, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Timeline from "../../components/ui/Timeline.astro";
+import Icon from "../../components/ui/Icon.astro";
+import { PAGES, BASE_PATH } from "../../config";
+
+if (PAGES.cv.isActive === false) {
+    return Astro.redirect("/404");
+}
+
+const cvEntry = await getEntry("cv", "cv");
+if (!cvEntry) {
+    throw new Error(
+        "CV content not found. Please ensure src/content/cv.md exists.",
+    );
+}
+
+const { Content } = await render(cvEntry);
+const { name, title, experience = [], education = [] } = cvEntry.data;
+
+const cvPdfUrl = BASE_PATH ? `${BASE_PATH}/Md_Naim_Molla_CV.pdf` : `/Md_Naim_Molla_CV.pdf`;
+---
+
+<BaseLayout title={PAGES.cv.title}>
+    <header class="page-header flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="page-title mb-1">{PAGES.cv.title}</h1>
+            {PAGES.cv.subtitle && <p class="page-subtitle">{PAGES.cv.subtitle}</p>}
+        </div>
+        <a
+            href={cvPdfUrl}
+            download="Md_Naim_Molla_CV.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn inline-flex items-center gap-2 self-start sm:self-center px-4 py-2.5 rounded-lg bg-[var(--accent)] text-white font-medium shadow-xs hover:opacity-90 transition-opacity no-underline text-sm"
+        >
+            <Icon name="Download" size={16} />
+            <span>Download CV (PDF)</span>
+        </a>
+    </header>
+
+    <div class="container-narrow">
+        {
+            experience.length > 0 && (
+                <section class="section">
+                    <h2 class="section-title border-b border-border pb-2">
+                        Professional Experience
+                    </h2>
+                    <Timeline items={experience.map(exp => ({
+                        title: exp.role,
+                        subtitle: exp.institution,
+                        period: exp.period,
+                        description: exp.description
+                    }))} />
+                </section>
+            )
+        }
+
+        {
+            education.length > 0 && (
+                <section class="section">
+                    <h2 class="section-title border-b border-border pb-2">
+                        Education
+                    </h2>
+                    <Timeline items={education.map(edu => ({
+                        title: edu.degree,
+                        subtitle: edu.institution,
+                        period: edu.period,
+                        description: edu.description,
+                        thesis: edu.thesis
+                    }))} />
+                </section>
+            )
+        }
+
+        <div class="prose max-w-none">
+            <Content />
+        </div>
+    </div>
+</BaseLayout>

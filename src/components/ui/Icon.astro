@@ -1,0 +1,50 @@
+---
+import { ICONS, type IconName } from "../../assets/icons";
+
+interface Props {
+    name: IconName | string;
+    size?: number | string;
+    class?: string;
+    strokeWidth?: number;
+    id?: string;
+}
+
+const { name, size = 24, class: className, strokeWidth = 1.5, id } = Astro.props;
+const iconContentRaw = ICONS[name as IconName];
+const iconContent = iconContentRaw
+    ? (() => {
+          let s = iconContentRaw.trim();
+          const svgOpen = s.match(/<svg([^>]*)>/i);
+          if (svgOpen) {
+              const attrs = svgOpen[1];
+              const hasWidth = /\bwidth=/.test(attrs);
+              const hasHeight = /\bheight=/.test(attrs);
+              const hasFill = /\bfill=/.test(attrs);
+              const replacements: string[] = [];
+              if (!hasWidth) replacements.push(`width=\"${size}\"`);
+              if (!hasHeight) replacements.push(`height=\"${size}\"`);
+              if (!hasFill) replacements.push(`fill=\"currentColor\"`);
+              if (replacements.length > 0) {
+                  const newOpen = `<svg${attrs} ${replacements.join(" ")}>`;
+                  s = s.replace(/<svg([^>]*)>/i, newOpen);
+              }
+          }
+          // Ensure any explicit width/height values present are normalized to the requested size
+          s = s.replace(/width=\"[^\"]*\"/, `width=\"${size}\"`).replace(/height=\"[^\"]*\"/, `height=\"${size}\"`);
+          return s;
+      })()
+    : null;
+if (!iconContent) {
+    throw new Error(
+        `[Unknown Icon]: ${name}`
+    )
+}
+---
+
+{
+    iconContent ? (
+        <span id={id} class={className} set:html={iconContent} />
+    ) : (
+        <span class="text-red-500 text-xs">[Icon Not Found: {name}]</span>
+    )
+}

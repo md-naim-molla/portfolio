@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseItemCard from "../../components/ui/BaseItemCard.astro";
+import { PAGES } from "../../config";
+import { getListingItem } from "../../utils/adapters";
+
+if (PAGES.projects.isActive === false) {
+    return Astro.redirect("/404");
+}
+
+const projects = await getCollection("projects");
+const sortedProjects = (projects || []).sort((a, b) => {
+    const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+    const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+    return dateB - dateA;
+});
+---
+
+<BaseLayout title={PAGES.projects.title}>
+    <header class="page-header">
+        <h1 class="page-title">{PAGES.projects.title}</h1>
+        {PAGES.projects.subtitle && <p class="page-subtitle">{PAGES.projects.subtitle}</p>}
+    </header>
+
+    <section class="item-list">
+        {sortedProjects.map((entry) => {
+            const item = getListingItem(entry);
+            return <BaseItemCard {...item} href={`/projects/${entry.id}`} />;
+        })}
+    </section>
+</BaseLayout>

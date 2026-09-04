@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseItemCard from "../../components/ui/BaseItemCard.astro";
+import { PAGES } from "../../config";
+import { getListingItem } from "../../utils/adapters";
+
+if (PAGES.talks.isActive === false) {
+    return Astro.redirect("/404");
+}
+
+const talks = await getCollection("talks");
+const sortedTalks = (talks || []).sort((a, b) => {
+    const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+    const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+    return dateB - dateA;
+});
+---
+
+<BaseLayout title={PAGES.talks.title}>
+    <header class="page-header">
+        <h1 class="page-title">{PAGES.talks.title}</h1>
+        {PAGES.talks.subtitle && <p class="page-subtitle">{PAGES.talks.subtitle}</p>}
+    </header>
+
+    <section class="item-list">
+        {sortedTalks.map((entry) => {
+            const item = getListingItem(entry);
+            return <BaseItemCard {...item} href={`/talks/${entry.id}`} />;
+        })}
+    </section>
+</BaseLayout>

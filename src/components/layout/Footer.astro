@@ -1,0 +1,11 @@
+---
+import { SITE } from "../../config";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+    <div class="flex items-center gap-4">
+        <span class="body-xs opacity-75">&copy; {currentYear} {SITE.author}. All rights reserved.</span>
+    </div>
+</footer>

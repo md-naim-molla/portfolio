@@ -1,0 +1,251 @@
+---
+import { getEntry, render, getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseItemCard from "../components/ui/BaseItemCard.astro";
+import Timeline from "../components/ui/Timeline.astro";
+import Tag from "../components/ui/Tag.astro";
+import Icon from "../components/ui/Icon.astro";
+import { PAGES, SOCIALS } from "../config";
+import { getListingItem } from "../utils/adapters";
+
+// Load bio content
+const bioEntry = await getEntry("bio", "bio");
+const { Content: BioContent } = bioEntry
+	? await render(bioEntry)
+	: { Content: null };
+
+// Load featured publications (up to 2)
+const allPubs = await getCollection("publications");
+const featuredPubs = allPubs
+	.sort((a, b) => {
+		const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+		const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+		return dateB - dateA;
+	})
+	.slice(0, 2);
+
+// Load featured talks (up to 2)
+const allTalks = await getCollection("talks");
+const featuredTalks = allTalks
+	.sort((a, b) => {
+		const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+		const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+		return dateB - dateA;
+	})
+	.slice(0, 2);
+
+// Load featured projects (up to 2)
+const allProjects = await getCollection("projects");
+const featuredProjects = allProjects.slice(0, 2);
+
+// Research interests
+const researchAreas = [
+	{
+		title: "Natural Language Processing (NLP)",
+		desc: "Language representation, computational linguistics, sentiment analysis, and text analytics.",
+	},
+	{
+		title: "Machine Learning & Deep Learning",
+		desc: "Predictive modeling, neural architectures, pattern recognition, and algorithm development.",
+	},
+	{
+		title: "Statistical Modeling & Inference",
+		desc: "Bayesian statistics, biostatistical analysis, probability modeling, and empirical inference.",
+	},
+	{
+		title: "Public Health & Epidemiology",
+		desc: "Health surveillance data, epidemiological modeling, and data-driven healthcare insights.",
+	},
+];
+
+// Recent news & milestones
+const newsItems = [
+	{
+		title: "Master of Science in Statistics",
+		period: "Present",
+		subtitle: "University of Rajshahi, Bangladesh",
+		description: "Conducting graduate research at the intersection of AI, NLP, and statistical inference.",
+	},
+	{
+		title: "B.Sc. (Honours) in Statistics",
+		period: "Completed",
+		subtitle: "University of Rajshahi, Bangladesh",
+		description: "Built strong mathematical foundations in probability, multivariate analysis, and experimental design.",
+	},
+];
+
+const mailSocial = SOCIALS.find((s) => s.name === "Mail");
+---
+
+<BaseLayout title={PAGES.home.title}>
+	<div class="container-narrow flex flex-col gap-10">
+		<!-- Bio Section -->
+		<section>
+			{
+				(PAGES.home.title || PAGES.home.subtitle) && (
+					<header class="page-header mb-4">
+						{PAGES.home.title && (
+							<h1 class="page-title">{PAGES.home.title}</h1>
+						)}
+						{PAGES.home.subtitle && (
+							<p class="page-subtitle">{PAGES.home.subtitle}</p>
+						)}
+					</header>
+				)
+			}
+			<div class="prose">
+				{BioContent ? <BioContent /> : <p>Loading bio...</p>}
+			</div>
+		</section>
+
+		<!-- Research Interests -->
+		<section class="section">
+			<div class="flex justify-between items-baseline mb-4">
+				<h2 class="section-title mb-0">Research Interests</h2>
+				<a
+					href="/research"
+					class="text-sm font-semibold text-[var(--accent)] hover:underline"
+				>
+					Read research statement & themes →
+				</a>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+				{
+					researchAreas.map((area) => (
+						<div class="p-4 rounded-lg border border-[var(--border)] bg-[var(--surface)] transition-all duration-200 hover:border-[var(--accent)]">
+							<h3 class="title-md text-[var(--accent)] font-bold mb-1">
+								{area.title}
+							</h3>
+							<p class="body-sm opacity-85">{area.desc}</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<!-- Recent Updates / Milestones -->
+		<section class="section">
+			<h2 class="section-title">
+				Recent Updates & Milestones
+			</h2>
+			<div class="mt-4">
+				<Timeline items={newsItems} />
+			</div>
+		</section>
+
+		<!-- Featured Publications -->
+		{
+			featuredPubs.length > 0 && (
+				<section class="section">
+					<div class="flex justify-between items-baseline mb-4">
+						<h2 class="section-title mb-0">Featured Publications</h2>
+						<a
+							href="/publications"
+							class="text-sm font-semibold text-[var(--accent)] hover:underline"
+						>
+							View all publications →
+						</a>
+					</div>
+					<div class="flex flex-col gap-4">
+						{featuredPubs.map((entry) => {
+							const item = getListingItem(entry);
+							return (
+								<BaseItemCard
+									{...item}
+									href={`/publications/${entry.id}`}
+								/>
+							);
+						})}
+					</div>
+				</section>
+			)
+		}
+
+		<!-- Talks & Conferences -->
+		{
+			featuredTalks.length > 0 && (
+				<section class="section">
+					<div class="flex justify-between items-baseline mb-4">
+						<h2 class="section-title mb-0">Talks & Conferences</h2>
+						<a
+							href="/talks"
+							class="text-sm font-semibold text-[var(--accent)] hover:underline"
+						>
+							View all talks →
+						</a>
+					</div>
+					<div class="flex flex-col gap-4">
+						{featuredTalks.map((entry) => {
+							const item = getListingItem(entry);
+							return (
+								<BaseItemCard
+									{...item}
+									href={`/talks/${entry.id}`}
+								/>
+							);
+						})}
+					</div>
+				</section>
+			)
+		}
+
+		<!-- Featured Projects -->
+		{
+			featuredProjects.length > 0 && (
+				<section class="section">
+					<div class="flex justify-between items-baseline mb-4">
+						<h2 class="section-title mb-0">Featured Projects</h2>
+						<a
+							href="/projects"
+							class="text-sm font-semibold text-[var(--accent)] hover:underline"
+						>
+							View all projects →
+						</a>
+					</div>
+					<div class="flex flex-col gap-4">
+						{featuredProjects.map((entry) => {
+							const item = getListingItem(entry);
+							return (
+								<BaseItemCard
+									{...item}
+									href={`/projects/${entry.id}`}
+								/>
+							);
+						})}
+					</div>
+				</section>
+			)
+		}
+
+		<!-- Collaboration / Contact Note -->
+		<section class="section p-6 rounded-xl border border-[var(--border)] bg-[var(--surface)]">
+			<h2 class="title-md font-bold mb-2">Get in Touch & Collaboration</h2>
+			<p class="body mb-4">
+				I am always open to discussing new research opportunities, collaborations in Machine Learning & Statistical modeling, or academic inquiries.
+			</p>
+			<div class="flex flex-wrap gap-3 items-center">
+				{
+					mailSocial && (
+						<a
+							href={mailSocial.href}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="btn btn-sm inline-flex items-center gap-2"
+						>
+							<Icon name="Mail" size={16} />
+							<span>Send an Email (Gmail)</span>
+						</a>
+					)
+				}
+				<a
+					href="/cv"
+					class="btn btn-sm inline-flex items-center gap-2"
+				>
+					<Icon name="User" size={16} />
+					<span>View Curriculum Vitae</span>
+				</a>
+			</div>
+		</section>
+	</div>
+</BaseLayout>
+

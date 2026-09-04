@@ -1,0 +1,58 @@
+---
+import { NAV_LINKS, PAGES, BASE_PATH, THEME_CONFIG } from "../../config";
+import Icon from "../ui/Icon.astro";
+
+const currentPath = Astro.url.pathname;
+const topLevelBase = BASE_PATH || "/";
+const resolveHref = (href: string) => href === "/" ? topLevelBase : `${BASE_PATH}${href}`;
+const normalize = (path: string) => path.replace(/\/$/, "") || "/";
+
+const normalizedCurrentPath = normalize(currentPath);
+const showToggle = THEME_CONFIG.lightAndDark;
+---
+
+<nav class="navbar">
+    <ul class="nav-links items-center">
+        {
+            NAV_LINKS.filter((link) => {
+                const isHome = link.href === "/";
+                const pageKey = isHome
+                    ? "home"
+                    : link.href.split("/").filter(Boolean)[0];
+                const pageConfig = (PAGES as any)[pageKey];
+                return link.isActive !== false && pageConfig?.active !== false;
+            }).map((link) => (
+                <li>
+                    <a
+                        href={resolveHref(link.href)}
+                        class={`nav-link ${
+                            normalizedCurrentPath === normalize(resolveHref(link.href)) ||
+                            (link.href !== "/" &&
+                                normalizedCurrentPath.startsWith(normalize(resolveHref(link.href))))
+                                ? "active"
+                                : "inactive"
+                        }`}
+                    >
+                        {link.label}
+                        <span class="nav-link-line" />
+                    </a>
+                </li>
+            ))
+        }
+        {
+            showToggle && (
+                <li class="flex items-center ml-1">
+                    <button
+                        id="theme-toggle"
+                        aria-label="Toggle Dark Mode"
+                        title="Toggle Dark Mode"
+                        class="btn-icon w-8 h-8 cursor-pointer text-foreground opacity-80 hover:opacity-100"
+                    >
+                        <Icon name="Sun" size={16} class="hidden dark:block" />
+                        <Icon name="Moon" size={16} class="block dark:hidden" />
+                    </button>
+                </li>
+            )
+        }
+    </ul>
+</nav>
