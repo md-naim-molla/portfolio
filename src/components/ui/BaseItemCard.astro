@@ -76,7 +76,7 @@ const externalHostLabel = externalUrl ? (() => {
 // Highlight author name if matches Md. Naim Molla or variants
 const formatAuthors = (authorsStr?: string) => {
     if (!authorsStr) return "";
-    const targets = ["MN Molla", "M.N. Molla", "Md. Naim Molla", "Naim Molla", "Md Naim Molla", "Claude Shannon"];
+    const targets = ["MN Molla", "M.N. Molla", "Md. Naim Molla", "Naim Molla", "Md Naim Molla"];
     let formatted = authorsStr;
     for (const target of targets) {
         if (formatted.includes(target)) {

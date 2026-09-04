@@ -20,7 +20,7 @@ const showToggle = THEME_CONFIG.lightAndDark;
                     ? "home"
                     : link.href.split("/").filter(Boolean)[0];
                 const pageConfig = (PAGES as any)[pageKey];
-                return link.isActive !== false && pageConfig?.active !== false;
+                return link.isActive !== false && pageConfig?.isActive !== false;
             }).map((link) => (
                 <li>
                     <a

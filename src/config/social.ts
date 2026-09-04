@@ -29,7 +29,7 @@ export const SOCIALS: SocialLink[] = [
         name: "LinkedIn",
         href: "https://www.linkedin.com/in/md-naimmolla",
         linkTitle: `Md. Naim Molla on LinkedIn`,
-        isActive: true, // Assuming Claude doesn't have a LinkedIn profile
+        isActive: true,
     },
     {
         name: "ResearchGate",

@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Tag from "../../components/ui/Tag.astro";
 import Icon from "../../components/ui/Icon.astro";
@@ -8,9 +7,6 @@ import { PAGES, SOCIALS } from "../../config";
 if (PAGES.research?.isActive === false) {
     return Astro.redirect("/404");
 }
-
-const publications = await getCollection("publications");
-const projects = await getCollection("projects");
 
 const mailSocial = SOCIALS.find((s) => s.name === "Mail");
 const scholarSocial = SOCIALS.find((s) => s.name === "Google Scholar");
@@ -24,7 +20,7 @@ const researchThemes = [
         publications: [
             {
                 title: "A Multi-Model Approach to English-Bangla Sentiment Classification of Government Mobile Banking App Reviews",
-                href: "/publications/noise",
+                href: "/publications/sentiment-classification",
                 year: "2024",
             }
         ],

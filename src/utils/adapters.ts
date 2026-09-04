@@ -31,6 +31,6 @@ export function getDetailItem(entry: any, collection: string): DetailItem {
     
     return {
         ...listing,
-        backHref: collection === 'posts' ? '/posts' : `/${collection}`,
+        backHref: `/${collection}`,
     };
 }

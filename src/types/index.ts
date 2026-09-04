@@ -5,13 +5,12 @@ export type {
     ExperienceItem,
     CV,
     BasePage,
-    Blog,
     Project,
     Publication,
     Talk,
 } from "./content";
 
-export type { DisplayLink, DisplayMeta, ListingItem, DetailItem } from "./display";
+export type { ListingItem, DetailItem } from "./display";
 
 export type {
     SiteConfig,

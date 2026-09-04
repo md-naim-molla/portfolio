@@ -33,11 +33,6 @@ export interface BasePage {
   tags: string[];
 }
 
-export interface Blog extends BasePage {
-  date: string;
-  author?: string;
-}
-
 export interface Project extends BasePage {
   date: string;
   external_url?: string;
@@ -60,4 +55,3 @@ export interface Talk extends BasePage {
   external_url?: string;
   image?: string;
 }
-// Teaching type removed

@@ -18,7 +18,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  site: 'https://rubzip.github.io',
+  site: 'https://md-naim-molla.github.io',
   base: '/academic-portfolio-astro',
   integrations: [sitemap()],
 });
