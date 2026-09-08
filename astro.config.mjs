@@ -12,13 +12,17 @@ export default defineConfig({
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],
   },
+
   build: {
-    inlineStylesheets: 'always'
+    inlineStylesheets: 'always',
   },
+
   vite: {
     plugins: [tailwindcss()],
   },
-  site: 'https://md-naim-molla.github.io',
-  base: '/academic-portfolio-astro',
+
+  site: 'https://naim-portfolio.pages.dev',
+  base: '/',
+
   integrations: [sitemap()],
 });
