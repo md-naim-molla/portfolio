@@ -1,4 +1,5 @@
 import type { ListingItem, DetailItem } from "../types";
+import { BASE_PATH } from "../config/site";
 
 function formatDate(dateValue: string | Date | undefined): string | undefined {
     if (!dateValue) return undefined;
@@ -31,6 +32,6 @@ export function getDetailItem(entry: any, collection: string): DetailItem {
     
     return {
         ...listing,
-        backHref: `/${collection}`,
+        backHref: BASE_PATH ? `${BASE_PATH}/${collection}` : `/${collection}`,
     };
 }

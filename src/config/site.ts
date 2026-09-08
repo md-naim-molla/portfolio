@@ -1,7 +1,7 @@
 import type { SiteConfig, ThemeConfig, SettingsConfig, UmamiAnalyticsConfig, AnalyticsConfig } from "../types";
 
 export const SITE: SiteConfig = {
-    website: "https://md-naim-molla.github.io/academic-portfolio-astro/",
+    website: "https://naim-portfolio.pages.dev/",
     author: "Md. Naim Molla",
     desc: "Personal academic portfolio and research website of Md. Naim Molla, AI Researcher and Graduate Student in Statistics at University of Rajshahi.",
     title: "Md. Naim Molla",
