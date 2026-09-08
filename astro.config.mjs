@@ -22,6 +22,7 @@ export default defineConfig({
   },
 
   site: 'https://naim-portfolio.pages.dev',
+  site: 'https://naim.info.bd',
   base: '/',
 
   integrations: [sitemap()],
