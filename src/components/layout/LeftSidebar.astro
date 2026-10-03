@@ -1,18 +1,27 @@
 ---
-import { SITE, SOCIALS, SOCIAL_ICONS } from "../../config";
+import { SITE, BASE_PATH, SOCIALS, SOCIAL_ICONS } from "../../config";
 import { getCollection } from "astro:content";
 import Icon from "../ui/Icon.astro";
 
 const activeSocials = SOCIALS.filter((s) => s.isActive);
 const bioCollection = await getCollection("bio");
 const bio = bioCollection[0]?.data;
+
+const resolveAvatarUrl = (avatar?: string) => {
+    if (!avatar) return undefined;
+    if (avatar.startsWith("http://") || avatar.startsWith("https://") || avatar.startsWith("data:")) {
+        return avatar;
+    }
+    const clean = avatar.startsWith("/") ? avatar.slice(1) : avatar;
+    return BASE_PATH ? `${BASE_PATH}/${clean}` : `/${clean}`;
+};
 ---
 
 <aside class="sidebar max-lg:flex-row max-lg:flex-wrap max-lg:gap-3 max-md:gap-2">
     <div class="flex flex-col items-center text-center max-lg:flex-row max-lg:text-left max-lg:gap-3 max-lg:items-center max-md:gap-2">
         {bio?.avatar && (
             <img
-                src={new URL(bio.avatar, SITE.website).pathname}
+                src={resolveAvatarUrl(bio.avatar)}
                 alt={`Avatar of ${bio.name}`}
                 width="160"
                 height="160"
