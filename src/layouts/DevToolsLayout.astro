@@ -84,9 +84,6 @@ const themeDark = THEMES[themeDarkKey] || THEMES.dark_default;
                 })();
 
                 document.documentElement.setAttribute("data-theme", theme);
-                if (allowDark) {
-                    localStorage.setItem("theme", theme);
-                }
             }
 
             setTheme();

@@ -6,7 +6,7 @@ export const SITE: SiteConfig = {
     author: "Md. Naim Molla",
     desc: "Personal academic portfolio and research website of Md. Naim Molla, AI Researcher and Graduate Student in Statistics at University of Rajshahi.",
     title: "Md. Naim Molla",
-    ogImage: "nayeem.jpg",
+    ogImage: "profile-v3.jpg",
     postPerPage: 5,
     favicon: "/favicon.svg",
     lang: "en",

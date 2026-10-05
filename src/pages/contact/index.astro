@@ -123,9 +123,11 @@ const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${directE
                             <Icon name="Mail" size={16} />
                             <span>Email directly</span>
                         </a>
-                        <span class="block text-xs opacity-60 mt-0.5 ml-6">
+                        <!--email_off-->
+                        <span class="direct-email-text block text-xs opacity-60 mt-0.5 ml-6">
                             {directEmail}
                         </span>
+                        <!--/email_off-->
                     </li>
 
                     {linkedInSocial && (
@@ -204,9 +206,15 @@ const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${directE
 </BaseLayout>
 
 <script is:inline>
-    function setupContactForm() {
+    function setupContactPage() {
+        // Guarantee email is displayed clearly even if email obfuscation scripts are blocked by browser shields
+        document.querySelectorAll(".direct-email-text").forEach((el) => {
+            el.textContent = "naim.molla.stats@gmail.com";
+        });
+
         const form = document.getElementById("contact-form");
-        if (form) {
+        if (form && !form.dataset.bound) {
+            form.dataset.bound = "true";
             form.addEventListener("submit", (e) => {
                 e.preventDefault();
                 const name = document.getElementById("form-name")?.value || "";
@@ -225,6 +233,6 @@ const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${directE
         }
     }
 
-    setupContactForm();
-    document.addEventListener("astro:page-load", setupContactForm);
+    setupContactPage();
+    document.addEventListener("astro:page-load", setupContactPage);
 </script>
