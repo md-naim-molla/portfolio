@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Tag from "../../components/ui/Tag.astro";
 import Icon from "../../components/ui/Icon.astro";
 import { PAGES, SOCIALS } from "../../config";
 
@@ -16,12 +15,11 @@ const researchThemes = [
     {
         title: "NLP & Multilingual Language Understanding",
         summary: "Developing robust, multi-model architectures and representation learning frameworks for low-resource, code-mixed, and real-world linguistic datasets.",
-        tags: ["NLP & LLMs", "Transformers", "Low-Resource AI", "Sentiment Analysis", "Ensemble Learning"],
         publications: [
             {
                 title: "A Multi-Model Approach to English-Bangla Sentiment Classification of Government Mobile Banking App Reviews",
                 href: "/publications/sentiment-classification",
-                year: "2024",
+                year: "2026",
             }
         ],
         projects: [
@@ -34,12 +32,11 @@ const researchThemes = [
     {
         title: "AI in Public Health & Epidemiological Modeling",
         summary: "Applying rigorous statistical modeling, disease surveillance frameworks, and machine learning to analyze epidemiological data and healthcare outcomes.",
-        tags: ["Public Health", "Epidemiology", "Biostatistics", "Predictive Analytics", "Health Surveillance"],
         publications: [
             {
                 title: "Statistical & ML Frameworks for Healthcare Pattern Recognition",
                 href: "/publications",
-                year: "2024",
+                year: "2026",
             }
         ],
         projects: [
@@ -52,12 +49,11 @@ const researchThemes = [
     {
         title: "Statistical Machine Learning & Uncertainty Quantification",
         summary: "Bridging mathematical probability theory and deep learning to ensure reliable uncertainty estimation, model interpretability, and robust empirical validation.",
-        tags: ["Statistical Learning", "Bayesian Inference", "Uncertainty Quantification", "Model Interpretability"],
         publications: [
             {
                 title: "Robust Statistical Inference in High-Dimensional Empirical Data",
                 href: "/publications",
-                year: "2024",
+                year: "2026",
             }
         ],
         projects: [
@@ -123,12 +119,6 @@ const researchThemes = [
                                 {theme.summary}
                             </p>
 
-                            <!-- Tags -->
-                            <div class="flex flex-wrap gap-1.5 mt-4">
-                                {theme.tags.map((tag) => (
-                                    <Tag name={tag} size="sm" />
-                                ))}
-                            </div>
 
                             <!-- Sub-grid: Publications & Projects -->
                             <div class="mt-6 pt-5 border-t border-[var(--border)] grid gap-6 sm:grid-cols-2">

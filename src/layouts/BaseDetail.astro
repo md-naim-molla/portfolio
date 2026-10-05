@@ -38,7 +38,16 @@ const ogImage = entry.data.image || SITE.ogImage;
         <BackLink href={detail.backHref} label={collection} />
         {detail.externalUrl && (
             <a href={detail.externalUrl} target="_blank" rel="noopener noreferrer" class="link">
-                View external
+                {(() => {
+                    try {
+                        const host = new URL(detail.externalUrl).hostname.toLowerCase();
+                        if (host.includes("pypi")) return "View on PyPI ↗";
+                        if (host.includes("github.com")) return "View on GitHub ↗";
+                        if (host.includes("arxiv")) return "View on arXiv ↗";
+                        if (host.includes("researchgate")) return "View on ResearchGate ↗";
+                    } catch {}
+                    return "View external ↗";
+                })()}
             </a>
         )}
     </div>

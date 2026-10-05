@@ -61,6 +61,7 @@ const resolvedHref = resolveHref(href);
 const externalHostLabel = externalUrl ? (() => {
     try {
         const host = new URL(externalUrl).hostname.toLowerCase();
+        if (host.includes("pypi")) return "PyPI";
         if (host.includes("arxiv")) return "arXiv";
         if (host.includes("researchgate")) return "ResearchGate";
         if (host.includes("github.com")) return "GitHub";
