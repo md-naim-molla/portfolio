@@ -34,6 +34,17 @@ Statistics taught me how to ask the right questions. Machine Learning gave me th
 
 ---
 
+## Technical Skills
+- **Programming Languages:** Python, R, SQL, STATA, C++
+- **Machine Learning:** EDA, Feature Engineering, Model Training and Evaluation, Model Deployment
+- **NLP:** Text preprocessing, Embedding, Transformer, Hugging Face
+- **GenAI:** LLM, Vector Database, RAG, Google API, Ollama
+- **Statistics:** Probability Theory, Multivariate Analysis, Hypothesis Testing, Estimation, Time Series Analysis, Survival Analysis, Epidemiology
+- **Tools:** Git, Linux/Bash, Jupyter, SPSS, VS Code, Docker, AWS
+- **Web Frameworks:** Streamlit, Flask, FastAPI
+
+---
+
 ## Extra-Curricular Activities & Leadership
 - **Statistical Association, Department of Statistics, University of Rajshahi** *(Jan 2022 – Dec 2025)*
   - Served in multiple leadership roles including **Pro Vice President**, **Cultural Secretary**, **Assistant Cultural Secretary**, and **Assistant Welfare Secretary**.
