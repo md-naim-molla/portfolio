@@ -43,7 +43,7 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang={SITE.lang}>
+<html lang={SITE.lang} data-theme="light">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
@@ -171,21 +171,14 @@ const jsonLd = {
                 const theme = (() => {
                     if (
                         typeof localStorage !== "undefined" &&
-                        localStorage.getItem("theme")
+                        localStorage.getItem("theme_preference")
                     ) {
-                        return localStorage.getItem("theme");
-                    }
-                    if (
-                        window.matchMedia("(prefers-color-scheme: dark)")
-                            .matches
-                    ) {
-                        return "dark";
+                        return localStorage.getItem("theme_preference");
                     }
                     return "light";
                 })();
 
                 document.documentElement.setAttribute("data-theme", theme);
-                localStorage.setItem("theme", theme);
             }
 
             setTheme();
@@ -196,13 +189,13 @@ const jsonLd = {
                 if (toggle) {
                     toggle.addEventListener("click", () => {
                         const current =
-                            document.documentElement.getAttribute("data-theme");
+                            document.documentElement.getAttribute("data-theme") || "light";
                         const next = current === "dark" ? "light" : "dark";
                         document.documentElement.setAttribute(
                             "data-theme",
                             next,
                         );
-                        localStorage.setItem("theme", next);
+                        localStorage.setItem("theme_preference", next);
                     });
                 }
             }
