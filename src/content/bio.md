@@ -1,6 +1,6 @@
 ---
 name: "Md. Naim Molla"
-avatar: "profile-v3.jpg"
+avatar: "profile-v4.jpg"
 shortBio: "AI Researcher · MS in Statistics · University of Rajshahi · Bangladesh"
 ---
 

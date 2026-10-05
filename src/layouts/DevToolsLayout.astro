@@ -76,14 +76,23 @@ const themeDark = THEMES[themeDarkKey] || THEMES.dark_default;
                     if (!allowDark) return "light";
                     if (
                         typeof localStorage !== "undefined" &&
-                        localStorage.getItem("theme_preference")
+                        localStorage.getItem("theme")
                     ) {
-                        return localStorage.getItem("theme_preference");
+                        return localStorage.getItem("theme");
+                    }
+                    if (
+                        window.matchMedia("(prefers-color-scheme: dark)")
+                            .matches
+                    ) {
+                        return "dark";
                     }
                     return "light";
                 })();
 
                 document.documentElement.setAttribute("data-theme", theme);
+                if (allowDark) {
+                    localStorage.setItem("theme", theme);
+                }
             }
 
             setTheme();

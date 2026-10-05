@@ -6,10 +6,6 @@ experience:
     institution: "Data Science Research Lab, Department of Statistics, University of Rajshahi"
     period: "2025 – Present"
     description: "Conducting research at the intersection of Artificial Intelligence in Public Health, Epidemiology, Statistical Modeling, and Natural Language Processing."
-  - role: "Co-Founder"
-    institution: "Stat.BD"
-    period: "2025 – Present"
-    description: "Co-founded a research mentorship and statistical consultancy firm offering research methodology guidance, data analysis, and statistical software training."
   - role: "Python Instructor"
     institution: "Mentors4Data"
     period: "Feb 2025 – Sep 2025"
@@ -34,7 +30,7 @@ education:
 ---
 
 ## Objective
-Data Science professional with hands-on experience in Statistics, ML, NLP, and GenAI, seeking a full-time or part-time Data Science role.
+Statistics taught me how to ask the right questions. Machine Learning gave me the tools to answer them. My work connects both: building AI systems efficient enough for edge devices, robust enough for public health decisions, and honest enough about their limitations.
 
 ---
 
