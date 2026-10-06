@@ -21,7 +21,6 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  site: 'https://naim-portfolio.pages.dev',
   site: 'https://naim.info.bd',
   base: '/',
 
